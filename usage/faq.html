@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Contribution - The Tonbo Guide</title>
+        <title>FAQ - The Tonbo Guide</title>
 
 
         <!-- Custom HTML head -->
@@ -30,6 +30,8 @@
 
         <!-- Custom theme stylesheets -->
 
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     </head>
     <body>
     <div id="body-container">
@@ -83,7 +85,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="../start.html"><strong aria-hidden="true">1.</strong> Getting started</a></li><li class="chapter-item expanded "><a href="../examples/index.html"><strong aria-hidden="true">2.</strong> Examples</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../examples/declare.html"><strong aria-hidden="true">2.1.</strong> Using Tonbo</a></li><li class="chapter-item expanded "><a href="../examples/datafusion.html"><strong aria-hidden="true">2.2.</strong> Integrate with Datafusio</a></li><li class="chapter-item expanded "><a href="../examples/wasm.html"><strong aria-hidden="true">2.3.</strong> Using under Wasm</a></li></ol></li><li class="chapter-item expanded "><a href="../contribution/index.html" class="active"><strong aria-hidden="true">3.</strong> Contribution</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../contribution/build.html"><strong aria-hidden="true">3.1.</strong> Building</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="../start.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Usage</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../usage/tonbo.html"><strong aria-hidden="true">2.1.</strong> Tonbo</a></li><li class="chapter-item expanded "><a href="../usage/python.html"><strong aria-hidden="true">2.2.</strong> Python Binding</a></li><li class="chapter-item expanded "><a href="../usage/wasm.html"><strong aria-hidden="true">2.3.</strong> JavaScript Binding</a></li><li class="chapter-item expanded "><a href="../usage/conf.html"><strong aria-hidden="true">2.4.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="../usage/advance.html"><strong aria-hidden="true">2.5.</strong> Advance</a></li><li class="chapter-item expanded "><a href="../usage/faq.html" class="active"><strong aria-hidden="true">2.6.</strong> FAQ</a></li></ol></li><li class="chapter-item expanded "><a href="../examples/index.html"><strong aria-hidden="true">3.</strong> Examples</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../examples/declare.html"><strong aria-hidden="true">3.1.</strong> Using Tonbo</a></li><li class="chapter-item expanded "><a href="../examples/datafusion.html"><strong aria-hidden="true">3.2.</strong> Integrate with Datafusio</a></li><li class="chapter-item expanded "><a href="../examples/wasm.html"><strong aria-hidden="true">3.3.</strong> Using under Wasm</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> Contribution</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../contribution/build.html"><strong aria-hidden="true">4.1.</strong> Building</a></li><li class="chapter-item expanded "><a href="../contribution/pr.html"><strong aria-hidden="true">4.2.</strong> Submitting PR</a></li></ol></li><li class="chapter-item expanded "><a href="../tonbolite/index.html"><strong aria-hidden="true">5.</strong> TonboLite</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tonbolite/start.html"><strong aria-hidden="true">5.1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="../tonbolite/build.html"><strong aria-hidden="true">5.2.</strong> Building and Testing</a></li><li class="chapter-item expanded "><a href="../tonbolite/usage.html"><strong aria-hidden="true">5.3.</strong> Usage</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -147,16 +149,31 @@
 
                 <div id="content" class="content">
                     <main>
-                        
+                        <h1 id="faq"><a class="header" href="#faq">FAQ</a></h1>
+<h2 id="failed-to-run-custom-build-command-for-ring-in-macos"><a class="header" href="#failed-to-run-custom-build-command-for-ring-in-macos">Failed to run custom build command for <code>ring</code> in macOS</a></h2>
+<p>Apple Clang is a fork of Clang that is specialized to Apple's wishes. It doesn't support wasm32-unknown-unknown. You need to download and use llvm.org Clang instead. You can refer to this <a href="https://github.com/briansmith/ring/issues/1824">issue</a> for more information.</p>
+<pre><code class="language-bash">brew install llvm
+echo 'export PATH=&quot;/opt/homebrew/opt/llvm/bin:$PATH&quot;' &gt;&gt; ~/.zshrc
+</code></pre>
+<h2 id="why-my-data-is-not-recovered-and-the-size-of-log-file-and-wal-file-is-0"><a class="header" href="#why-my-data-is-not-recovered-and-the-size-of-log-file-and-wal-file-is-0">Why my data is not recovered and the size of log file and WAL file is 0?</a></h2>
+<p>As Tonbo uses buffer for WAL, so it may not be persisted before exiting. You can use <code>DB::flush_wal</code> to ensure WAL is persisted or use <code>DB::flush</code> to trigger compaction manually.</p>
+<p>If you don't want to use WAL buffer, you can set <code>DbOption::wal_buffer_size</code> to 0. See more details in <a href="./conf.html#wal-configuration">Configuration</a>.</p>
+<h2 id="how-to-persist-metadata-files-to-s3--why-metadata-files-are-not-persisted-in-serverless-environment-like-aws-lambda"><a class="header" href="#how-to-persist-metadata-files-to-s3--why-metadata-files-are-not-persisted-in-serverless-environment-like-aws-lambda">How to persist metadata files to S3? / Why metadata files are not persisted in serverless environment like AWS Lambda</a></h2>
+<p>If you want to persist metadata files to S3, you can configure <code>DbOption::base_fs</code> with <code>FsOptions::S3{...}</code>. This will enable Tonbo to upload metadata files and WAL files to the specified S3 bucket.</p>
+<blockquote>
+<p><strong>Note</strong>: This will not guarantee the latest metadata will be uploaded to S3. If you want to ensure the latest WAL is uploaded, you can use <code>DB::flush_wal</code>. If you want to ensure the latest metadata is uploaded, you can use <code>DB::flush</code> to trigger upload manually. If you want tonbo to trigger upload more frequently, you can adjust <code>DbOption::version_log_snapshot_threshold</code> to a smaller value. The default value is 200.</p>
+</blockquote>
+<p>See more details in <a href="./conf.html#manifest-configuration">Configuration</a>.</p>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../examples/wasm.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../usage/advance.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../contribution/build.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../examples/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -166,11 +183,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../examples/wasm.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../usage/advance.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../contribution/build.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../examples/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

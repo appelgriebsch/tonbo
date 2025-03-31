@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Getting started - The Tonbo Guide</title>
+        <title>Getting Started - The Tonbo Guide</title>
 
 
         <!-- Custom HTML head -->
@@ -30,6 +30,8 @@
 
         <!-- Custom theme stylesheets -->
 
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     </head>
     <body>
     <div id="body-container">
@@ -83,7 +85,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="start.html" class="active"><strong aria-hidden="true">1.</strong> Getting started</a></li><li class="chapter-item expanded "><a href="examples/index.html"><strong aria-hidden="true">2.</strong> Examples</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="examples/declare.html"><strong aria-hidden="true">2.1.</strong> Using Tonbo</a></li><li class="chapter-item expanded "><a href="examples/datafusion.html"><strong aria-hidden="true">2.2.</strong> Integrate with Datafusio</a></li><li class="chapter-item expanded "><a href="examples/wasm.html"><strong aria-hidden="true">2.3.</strong> Using under Wasm</a></li></ol></li><li class="chapter-item expanded "><a href="contribution/index.html"><strong aria-hidden="true">3.</strong> Contribution</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="contribution/build.html"><strong aria-hidden="true">3.1.</strong> Building</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="start.html" class="active"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Usage</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="usage/tonbo.html"><strong aria-hidden="true">2.1.</strong> Tonbo</a></li><li class="chapter-item expanded "><a href="usage/python.html"><strong aria-hidden="true">2.2.</strong> Python Binding</a></li><li class="chapter-item expanded "><a href="usage/wasm.html"><strong aria-hidden="true">2.3.</strong> JavaScript Binding</a></li><li class="chapter-item expanded "><a href="usage/conf.html"><strong aria-hidden="true">2.4.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="usage/advance.html"><strong aria-hidden="true">2.5.</strong> Advance</a></li><li class="chapter-item expanded "><a href="usage/faq.html"><strong aria-hidden="true">2.6.</strong> FAQ</a></li></ol></li><li class="chapter-item expanded "><a href="examples/index.html"><strong aria-hidden="true">3.</strong> Examples</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="examples/declare.html"><strong aria-hidden="true">3.1.</strong> Using Tonbo</a></li><li class="chapter-item expanded "><a href="examples/datafusion.html"><strong aria-hidden="true">3.2.</strong> Integrate with Datafusio</a></li><li class="chapter-item expanded "><a href="examples/wasm.html"><strong aria-hidden="true">3.3.</strong> Using under Wasm</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> Contribution</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="contribution/build.html"><strong aria-hidden="true">4.1.</strong> Building</a></li><li class="chapter-item expanded "><a href="contribution/pr.html"><strong aria-hidden="true">4.2.</strong> Submitting PR</a></li></ol></li><li class="chapter-item expanded "><a href="tonbolite/index.html"><strong aria-hidden="true">5.</strong> TonboLite</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tonbolite/start.html"><strong aria-hidden="true">5.1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="tonbolite/build.html"><strong aria-hidden="true">5.2.</strong> Building and Testing</a></li><li class="chapter-item expanded "><a href="tonbolite/usage.html"><strong aria-hidden="true">5.3.</strong> Usage</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -147,18 +149,50 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
-<p>To get started using tonbo you should make sure you have Rust installed on your system. If you haven't alreadly done yet, try following the instructions <a href="https://www.rust-lang.org/tools/install">here</a>.</p>
-<h2 id="adding-dependencies"><a class="header" href="#adding-dependencies">Adding dependencies</a></h2>
-<pre><code class="language-toml">fusio = { git = &quot;https://github.com/tonbo-io/fusio.git&quot;, rev = &quot;216eb446fb0a0c6e5e85bfac51a6f6ed8e5ed606&quot;, package = &quot;fusio&quot;, version = &quot;0.3.3&quot;, features = [
-  &quot;dyn&quot;,
-  &quot;fs&quot;,
-] }
-tokio = { version = &quot;1&quot;, features = [&quot;full&quot;] }
+                        <h1 id="getting-started"><a class="header" href="#getting-started">Getting started</a></h1>
+<ul>
+<li><a href="#installation">Installation</a>
+<ul>
+<li><a href="#prerequisite">Prerequisite</a></li>
+<li><a href="#installation-1">Installation</a></li>
+</ul>
+</li>
+<li><a href="#using-tonbo">Using Tonbo</a>
+<ul>
+<li><a href="#defining-schema">Defining Schema</a></li>
+<li><a href="#creating-database">Creating database</a></li>
+<li><a href="#operations-on-database">Operations on Database</a></li>
+<li><a href="#insert">Insert</a></li>
+<li><a href="#remove">Remove</a></li>
+<li><a href="#get">Get</a></li>
+<li><a href="#scan">Scan</a>
+<ul>
+<li><a href="#using-transaction">Using transaction</a></li>
+</ul>
+</li>
+<li><a href="#persistence">Persistence</a></li>
+<li><a href="#using-in-s3">Using in S3</a></li>
+</ul>
+</li>
+<li><a href="#what-next">What next?</a></li>
+</ul>
+<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
+<h3 id="prerequisite"><a class="header" href="#prerequisite">Prerequisite</a></h3>
+<p>To get started using tonbo you should make sure you have <a href="https://www.rust-lang.org/tools/install">Rust</a> installed on your system. If you haven't already done yet, try following the instructions <a href="https://www.rust-lang.org/tools/install">here</a>.</p>
+<h3 id="installation-1"><a class="header" href="#installation-1">Installation</a></h3>
+<p>To use local disk as storage backend, you should import <a href="https://github.com/tokio-rs/tokio">tokio</a> crate and enable &quot;tokio&quot; feature (enabled by default) in the <em>Cargo.toml</em> file.</p>
+<pre><code class="language-toml">tokio = { version = &quot;1&quot;, features = [&quot;full&quot;] }
 tonbo = { git = &quot;https://github.com/tonbo-io/tonbo&quot; }
 </code></pre>
-<h2 id="defining-schema"><a class="header" href="#defining-schema">Defining Schema</a></h2>
-<p>You can use <code>Record</code> macro to define schema of column family just like ORM. Tonbo will generate all relevant files for you at compile time.</p>
+<p>If you want to use tonbo in browser(use OPFS as storage backend), you should disable &quot;<em>tokio</em>&quot; feature and enable &quot;<em>wasm</em>&quot; feature(As &quot;<em>tokio</em>&quot; is enabled by default, you should also disable <code>default-features</code>). If you want to use S3 as backend, you also should enable &quot;<em>wasm-http</em>&quot; feature.</p>
+<pre><code class="language-toml">tonbo = { git = &quot;https://github.com/tonbo-io/tonbo&quot;, default-features = false, features = [
+    &quot;wasm&quot;,
+    &quot;wasm-http&quot;,
+] }
+</code></pre>
+<h2 id="using-tonbo"><a class="header" href="#using-tonbo">Using Tonbo</a></h2>
+<h3 id="defining-schema"><a class="header" href="#defining-schema">Defining Schema</a></h3>
+<p>Tonbo provides ORM-like macro for ease of use, you can use <code>Record</code> macro to define schema of column family. Tonbo will generate all relevant code for you at compile time.</p>
 <pre><code class="language-rust">use tonbo::Record;
 
 #[derive(Record, Debug)]
@@ -167,7 +201,6 @@ pub struct User {
     name: String,
     email: Option&lt;String&gt;,
     age: u8,
-    bytes: Bytes,
 }</code></pre>
 <ul>
 <li><code>Record</code>: Declare this struct as a Tonbo Schema</li>
@@ -181,7 +214,7 @@ pub struct User {
 <li>String type: <code>String</code></li>
 <li>Bytes: <code>bytes::Bytes</code></li>
 </ul>
-<h2 id="create-db"><a class="header" href="#create-db">Create DB</a></h2>
+<h3 id="creating-database"><a class="header" href="#creating-database">Creating database</a></h3>
 <p>After define you schema, you can create <code>DB</code> with a customized <code>DbOption</code></p>
 <pre><code class="language-rust">use std::fs;
 use fusio::path::Path;
@@ -200,89 +233,131 @@ async fn main() {
         .await
         .unwrap();
 }</code></pre>
-<p><code>UserSchema</code> is a struct that tonbo generates for you in the compile time, so you do not need to import it.</p>
-<h2 id="readwrite-data"><a class="header" href="#readwrite-data">Read/Write data</a></h2>
-<p>After create <code>DB</code>, you can execute <code>insert</code>, <code>remove</code>, <code>get</code> now. But remember that you will get a <code>UserRef</code> object rather than the <code>User</code>, if you get record from tonbo. This is a struct that tonbo generates for you in the compile time.</p>
-<pre><code class="language-rust">db.insert(User {
-    name: &quot;Alice&quot;.into(),
-    email: Some(&quot;alice@gmail.com&quot;.into()),
-    age: 22,
-})
-.await
-.unwrap();
-
-let age = db
-    .get(&amp;&quot;Alice&quot;.into(), |entry| {
+<p><code>UserSchema</code> is a struct that tonbo generates for you in the compile time, so you do not need to import it.  One thing you need to pay attention to is: you should <strong>make sure the path exists</strong> before creating <code>DBOption</code>.</p>
+<blockquote>
+<p><strong>Note:</strong> If you use tonbo in WASM, you should use <code>Path::from_opfs_path</code> rather than <code>Path::from_filesystem_path</code>.</p>
+</blockquote>
+<h3 id="operations-on-database"><a class="header" href="#operations-on-database">Operations on Database</a></h3>
+<p>After creating <code>DB</code>, you can execute <code>insert</code>, <code>remove</code>, <code>get</code> and other operations now. But remember that you will get a <strong><code>UserRef</code> instance</strong> that implements <code>RecordRef</code> trait rather than the <code>User</code>, if you get record from tonbo. This is a struct that tonbo generates for you in the compile time. It may look like:</p>
+<pre><code class="language-rust">#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+pub struct UserRef&lt;'r&gt; {
+    pub name: &amp;'r str,
+    pub email: Option&lt;&amp;'r str&gt;,
+    pub age: Option&lt;u8&gt;,
+}
+impl RecordRef for UserRef&lt;'_&gt; {
+    // ......
+}</code></pre>
+<h3 id="insert"><a class="header" href="#insert">Insert</a></h3>
+<p><code>DB::insert</code> receives a <code>Record</code> instance which is the instance of struct you defined with <code>#[derive(Record)]</code>.</p>
+<pre><code class="language-rust">db.insert(User { /* ... */ }).await.unwrap();</code></pre>
+<h3 id="remove"><a class="header" href="#remove">Remove</a></h3>
+<p><code>DB::remove</code> receives a <code>Key</code> which is the type of <code>#[record(primary_key)]</code>. This method will remove the record that specified by the given <code>Key</code>.</p>
+<pre><code class="language-rust">db.remove(&quot;Alice&quot;.into()).await.unwrap();</code></pre>
+<h3 id="get"><a class="header" href="#get">Get</a></h3>
+<p><code>DB::get</code> receives a <code>Key</code> and process the record with a closure that receives a <code>TransactionEntry</code>. You can use <code>TransactionEntry::get</code> to get the record which is the type of <code>RecordRef</code>.</p>
+<pre><code class="language-rust">let age = db.get(&amp;&quot;Alice&quot;.into(),
+    |entry| {
         // entry.get() will get a `UserRef`
         let user = entry.get();
         println!(&quot;{:#?}&quot;, user);
         user.age
     })
     .await
-    .unwrap();
-assert!(age.is_some());
-assert_eq!(age, Some(22));</code></pre>
-<h2 id="using-transaction"><a class="header" href="#using-transaction">Using transaction</a></h2>
-<p>Tonbo supports transaction. You can also push down filter, limit and projection operators in query.</p>
-<pre><code class="language-rust">let txn = db.transaction().await;
+    .unwrap();</code></pre>
+<h3 id="scan"><a class="header" href="#scan">Scan</a></h3>
+<p>Like <code>DB::get</code>, <code>DB::scan</code> receives a closure that process <code>TransactionEntry</code>. The difference is that <code>DB::scan</code> receives a range of <code>Key</code>s and process all data that satisfied with the closure.</p>
+<pre><code class="language-rust">let lower = &quot;Alice&quot;.into();
+let upper = &quot;Bob&quot;.into();
+let stream = db
+    .scan(
+        (Bound::Included(&amp;lower), Bound::Excluded(&amp;upper)),
+        |entry| {
+            let record_ref = entry.get();
 
-// get from primary key
+            record_ref.age
+        },
+    )
+    .await;
+let mut stream = std::pin::pin!(stream);
+while let Some(data) = stream.next().await.transpose().unwrap() {
+    // ...
+}</code></pre>
+<h4 id="using-transaction"><a class="header" href="#using-transaction">Using transaction</a></h4>
+<p>Tonbo supports transaction. You can also push down filter, limit and projection operators in query.</p>
+<pre><code class="language-rust">// create transaction
+let txn = db.transaction().await;
+
 let name = &quot;Alice&quot;.into();
 
-// get the zero-copy reference of record without any allocations.
+txn.insert(User { /* ... */ });
 let user = txn.get(&amp;name, Projection::All).await.unwrap();
 
 let upper = &quot;Blob&quot;.into();
 // range scan of user
 let mut scan = txn
     .scan((Bound::Included(&amp;name), Bound::Excluded(&amp;upper)))
-    // tonbo supports pushing down projection
-    .projection(vec![1])
-    // push down limitation
-    .limit(1)
     .take()
     .await
     .unwrap();
 
 while let Some(entry) = scan.next().await.transpose().unwrap() {
-    assert_eq!(
-        entry.value(),
-        Some(UserRef {
-            name: &quot;Alice&quot;,
-            email: Some(&quot;alice@gmail.com&quot;),
-            age: None,
-        })
-    );
+    let data = entry.value(); // type of UserRef
+    // ......
 }</code></pre>
-<h2 id="using-s3-backends"><a class="header" href="#using-s3-backends">Using S3 backends</a></h2>
-<p>Tonbo supports various storage backends, such as OPFS, S3, and maybe more in the future. You can use <code>DbOption::level_path</code> to specify which backend to use.</p>
-<p>For local storage, you can use <code>FsOptions::Local</code> as the parameter. And you can use <code>FsOptions::S3</code> for S3 storage. After create <code>DB</code>, you can then operator it like normal.</p>
-<pre><code class="language-rust">use fusio::{path::Path, remotes::aws::AwsCredential};
-use fusio_dispatch::FsOptions;
-use tonbo::{executor::tokio::TokioExecutor, DbOption, DB};
-
-#[tokio::main]
-async fn main() {
-    let fs_option = FsOptions::S3 {
-        bucket: &quot;wasm-data&quot;.to_string(),
-        credential: Some(AwsCredential {
-            key_id: &quot;key_id&quot;.to_string(),
-            secret_key: &quot;secret_key&quot;.to_string(),
-            token: None,
-        }),
-        endpoint: None,
-        sign_payload: None,
-        checksum: None,
-        region: Some(&quot;region&quot;.to_string()),
-    };
-
-    let options = DbOption::new(Path::from_filesystem_path(&quot;s3_path&quot;).unwrap(), &amp;UserSchema)
-        .level_path(2, &quot;l2&quot;, fs_option);
-
-    let db = DB::&lt;User, TokioExecutor&gt;::new(options, TokioExecutor::current(), UserSchema)
-        .await
-        .unwrap();
-}</code></pre>
+<h3 id="persistence"><a class="header" href="#persistence">Persistence</a></h3>
+<p>As Tonbo uses LSM(Log-Structured-Merge Tree) as the underlying data structure, some data are in the memory(mem). If you want to persist these data, you can use the <code>flush</code> method.</p>
+<p>If WAL is enabled, the data will be persisted to disk automatically. But as tonbo has buffer for WAL by default, you need to call <code>flush_wal</code> method if you want to ensure that all the data will be recovered. If you don not want to use buffer for WAL, you can disable it by setting <code>wal_buffer_size</code> to 0.</p>
+<pre><code class="language-rust">let options = DbOption::new(
+    Path::from_filesystem_path(&quot;./db_path/users&quot;).unwrap(),
+    &amp;UserSchema,
+).wal_buffer_size(0);</code></pre>
+<p>If you don't want to use WAL, you can disable it by setting the <code>DbOption::disable_wal</code>. But please ensure that losing data is acceptable for you.</p>
+<pre><code class="language-rust">let options = DbOption::new(
+    Path::from_filesystem_path(&quot;./db_path/users&quot;).unwrap(),
+    &amp;UserSchema,
+).disable_wal(true);</code></pre>
+<blockquote>
+<p><strong>Note</strong>: If you disable WAL, there is nothing to do with <code>flush_wal</code>. You need to call <code>flush</code> method to persist the memory data.</p>
+<p>If you enable WAL and set <code>wal_buffer_size</code> to 0, you do not need to call <code>flush_wal</code> method, since WAL will be flushed to disk before writing.</p>
+</blockquote>
+<h3 id="using-in-s3"><a class="header" href="#using-in-s3">Using in S3</a></h3>
+<p>If you want to use Tonbo in S3, you can configure <code>DbOption</code> to specify which part of the data to store in S3 and which part to store in local disk. Here is an example:</p>
+<pre><code class="language-rust">let s3_option = FsOptions::S3 {
+    bucket: &quot;bucket&quot;.to_string(),
+    credential: Some(AwsCredential {
+        key_id: &quot;key_id&quot;.to_string(),
+        secret_key: &quot;secret_key&quot;.to_string(),
+        token: None,
+    }),
+    endpoint: None,
+    sign_payload: None,
+    checksum: None,
+    region: Some(&quot;region&quot;.to_string()),
+};
+let options = DbOption::new(
+    Path::from_filesystem_path(&quot;./db_path/users&quot;).unwrap(),
+    &amp;UserSchema,
+).level_path(2, &quot;l2&quot;, s3_option.clone())
+).level_path(3, &quot;l3&quot;, s3_option);</code></pre>
+<p>In this example, the data of level 2 and level 3 will be stored in S3 and the rest of the data will be stored in local disk. If there are data in level 2 and level 3, you can find them in S3 like this:</p>
+<pre><code class="language-bash">s3://bucket/l2/
+├── xxx.parquet
+├── ......
+s3://bucket/l3/
+├── xxx.parquet
+├── ......
+</code></pre>
+<p>For more configuration options, please refer to the <a href="./usage/conf.html">Configuration</a> section.</p>
+<h2 id="what-next"><a class="header" href="#what-next">What next?</a></h2>
+<ul>
+<li>To learn more about tonbo in Rust or in WASM, you can refer to <a href="./usage/tonbo.html">Tonbo API</a></li>
+<li>To use tonbo in python, you can refer to <a href="./usage/python.html">Python API</a></li>
+<li>To learn more about tonbo in brower, you can refer to <a href="./usage/wasm.html">WASM API</a></li>
+<li>To learn more configuration about tonbo, you can refer to <a href="./usage/conf.html">Configuration</a></li>
+<li>There are some data structures for runtime schema, you can use them to <a href="./usage/advance.html">expole tonbo</a>. You can also refer to our <a href="https://github.com/tonbo-io/tonbo/tree/main/bindings/python">python</a>, <a href="https://github.com/tonbo-io/tonbo/tree/main/bindings/js">wasm</a> bindings and <a href="https://github.com/tonbo-io/tonbolite">Tonbolite(a SQLite extension)</a></li>
+<li>To learn more about tonbo by examples, you can refer to <a href="https://github.com/tonbo-io/tonbo/tree/main/examples">examples</a></li>
+</ul>
 
                     </main>
 
@@ -292,7 +367,7 @@ async fn main() {
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="examples/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="usage/tonbo.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -306,7 +381,7 @@ async fn main() {
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="examples/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="usage/tonbo.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

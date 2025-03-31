@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Integrate with Datafusio - The Tonbo Guide</title>
+        <title>Python Binding - The Tonbo Guide</title>
 
 
         <!-- Custom HTML head -->
@@ -85,7 +85,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="../start.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Usage</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../usage/tonbo.html"><strong aria-hidden="true">2.1.</strong> Tonbo</a></li><li class="chapter-item expanded "><a href="../usage/python.html"><strong aria-hidden="true">2.2.</strong> Python Binding</a></li><li class="chapter-item expanded "><a href="../usage/wasm.html"><strong aria-hidden="true">2.3.</strong> JavaScript Binding</a></li><li class="chapter-item expanded "><a href="../usage/conf.html"><strong aria-hidden="true">2.4.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="../usage/advance.html"><strong aria-hidden="true">2.5.</strong> Advance</a></li><li class="chapter-item expanded "><a href="../usage/faq.html"><strong aria-hidden="true">2.6.</strong> FAQ</a></li></ol></li><li class="chapter-item expanded "><a href="../examples/index.html"><strong aria-hidden="true">3.</strong> Examples</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../examples/declare.html"><strong aria-hidden="true">3.1.</strong> Using Tonbo</a></li><li class="chapter-item expanded "><a href="../examples/datafusion.html" class="active"><strong aria-hidden="true">3.2.</strong> Integrate with Datafusio</a></li><li class="chapter-item expanded "><a href="../examples/wasm.html"><strong aria-hidden="true">3.3.</strong> Using under Wasm</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> Contribution</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../contribution/build.html"><strong aria-hidden="true">4.1.</strong> Building</a></li><li class="chapter-item expanded "><a href="../contribution/pr.html"><strong aria-hidden="true">4.2.</strong> Submitting PR</a></li></ol></li><li class="chapter-item expanded "><a href="../tonbolite/index.html"><strong aria-hidden="true">5.</strong> TonboLite</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tonbolite/start.html"><strong aria-hidden="true">5.1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="../tonbolite/build.html"><strong aria-hidden="true">5.2.</strong> Building and Testing</a></li><li class="chapter-item expanded "><a href="../tonbolite/usage.html"><strong aria-hidden="true">5.3.</strong> Usage</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="../start.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Usage</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../usage/tonbo.html"><strong aria-hidden="true">2.1.</strong> Tonbo</a></li><li class="chapter-item expanded "><a href="../usage/python.html" class="active"><strong aria-hidden="true">2.2.</strong> Python Binding</a></li><li class="chapter-item expanded "><a href="../usage/wasm.html"><strong aria-hidden="true">2.3.</strong> JavaScript Binding</a></li><li class="chapter-item expanded "><a href="../usage/conf.html"><strong aria-hidden="true">2.4.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="../usage/advance.html"><strong aria-hidden="true">2.5.</strong> Advance</a></li><li class="chapter-item expanded "><a href="../usage/faq.html"><strong aria-hidden="true">2.6.</strong> FAQ</a></li></ol></li><li class="chapter-item expanded "><a href="../examples/index.html"><strong aria-hidden="true">3.</strong> Examples</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../examples/declare.html"><strong aria-hidden="true">3.1.</strong> Using Tonbo</a></li><li class="chapter-item expanded "><a href="../examples/datafusion.html"><strong aria-hidden="true">3.2.</strong> Integrate with Datafusio</a></li><li class="chapter-item expanded "><a href="../examples/wasm.html"><strong aria-hidden="true">3.3.</strong> Using under Wasm</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> Contribution</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../contribution/build.html"><strong aria-hidden="true">4.1.</strong> Building</a></li><li class="chapter-item expanded "><a href="../contribution/pr.html"><strong aria-hidden="true">4.2.</strong> Submitting PR</a></li></ol></li><li class="chapter-item expanded "><a href="../tonbolite/index.html"><strong aria-hidden="true">5.</strong> TonboLite</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tonbolite/start.html"><strong aria-hidden="true">5.1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="../tonbolite/build.html"><strong aria-hidden="true">5.2.</strong> Building and Testing</a></li><li class="chapter-item expanded "><a href="../tonbolite/usage.html"><strong aria-hidden="true">5.3.</strong> Usage</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -149,18 +149,59 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="integrate-with-datafusion"><a class="header" href="#integrate-with-datafusion">Integrate with Datafusion</a></h1>
-<p>TODO</p>
+                        <h1 id="tonbo-python-binding"><a class="header" href="#tonbo-python-binding">Tonbo Python Binding</a></h1>
+<h2 id="record"><a class="header" href="#record"><code>@Record</code></a></h2>
+<p>Tonbo provides ORM-like macro for ease of use, you can use <code>@Record</code> to define schema of column family.</p>
+<pre><code class="language-py">@Record
+class User:
+   id = Column(DataType.Int64, name=&quot;id&quot;, primary_key=True)
+   age = Column(DataType.Int16, name=&quot;age&quot;, nullable=True)
+   name = Column(DataType.String, name=&quot;name&quot;, nullable=False)
+</code></pre>
+<div class="warning">
+<p>This is a bad thing that you should pay attention to.</p>
+<p>Warning blocks should be used sparingly in documentation, to avoid &quot;warning
+fatigue,&quot; where people are trained to ignore them because they usually don't
+matter for what they're doing.</p>
+</div>
+<h2 id="configuration"><a class="header" href="#configuration">Configuration</a></h2>
+<h2 id="example"><a class="header" href="#example">Example</a></h2>
+<pre><code class="language-python">from tonbo import DbOption, Column, DataType, Record, TonboDB, Bound
+from tonbo.fs import from_filesystem_path
+import asyncio
+
+@Record
+class User:
+   id = Column(DataType.Int64, name=&quot;id&quot;, primary_key=True)
+   age = Column(DataType.Int16, name=&quot;age&quot;, nullable=True)
+   name = Column(DataType.String, name=&quot;name&quot;, nullable=False)
+
+async def main():
+    db = TonboDB(DbOption(from_filesystem_path(&quot;db_path/user&quot;)), User())
+    await db.insert(User(id=18, age=175, name=&quot;Alice&quot;))
+    record = await db.get(18)
+    print(record)
+
+    # use transcaction
+    txn = await db.transaction()
+    result = await txn.get(18)
+    scan = await txn.scan(Bound.Included(18), None, limit=10, projection=[&quot;id&quot;, &quot;name&quot;])
+
+    async for record in scan:
+        print(record)
+
+asyncio.run(main())
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../examples/declare.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../usage/tonbo.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../examples/wasm.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../usage/wasm.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -170,11 +211,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../examples/declare.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../usage/tonbo.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../examples/wasm.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../usage/wasm.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
